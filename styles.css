@@ -27,3 +27,4 @@
 .stats article{cursor:pointer}.stats article:hover{transform:translateY(-2px);box-shadow:0 10px 24px #6d3e2514}
 .top-actions{display:flex;align-items:center;justify-content:flex-end;gap:10px;flex-wrap:nowrap}.top-actions #installBtn{white-space:nowrap}.ledger-picker{white-space:nowrap}
 @media(max-width:720px){.top-actions{gap:6px;max-width:62vw}.ledger-picker span{display:none}.ledger-picker select{min-width:112px;padding-left:8px;padding-right:22px}.topbar h1{font-size:18px}.topbar h1 span{font-size:12px;margin-left:3px}}
+.print-summary .expense-total strong{color:#a24445}.print-summary .final.positive strong{color:#477a61}.print-summary .final.negative strong{color:#a24445}.print-section h2.green-heading{color:#477a61}
