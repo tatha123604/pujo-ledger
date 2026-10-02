@@ -63,4 +63,4 @@ $('#entryCategory').closest('label').classList.add('hidden');$('#categoriesList'
 $('#printBtn').onclick=()=>{renderPrintReport();printReport.querySelector('.print-header h1').textContent=`Pal Barir Durga Pujo ${state.activeYear}`;alignPrintTotals();window.print();};
 $('#syncCode')?.addEventListener('change',()=>{state.syncToken=$('#syncCode').value.trim();save();});
 $('#pushSyncBtn')?.addEventListener('click',()=>{state.syncToken=$('#syncCode').value.trim();save();pushCloudState();});
-$('#pullSyncBtn')?.addEventListener('click',()=>{state.syncToken=$('#syncCode').value.trim();save();pullCloudState();});
+$('#pullSyncBtn')?.addEventListener('click',()=>{state.syncToken=$('#syncCode').value.trim();cloudSyncPaused=true;save();cloudSyncPaused=false;pullCloudState();});
