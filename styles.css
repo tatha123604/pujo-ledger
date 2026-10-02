@@ -21,3 +21,4 @@
 @media print{body{background:#fff}body>*:not(#printReport){display:none!important}#printReport{display:block!important}.print-page{max-width:none}.print-section{break-inside:avoid}.print-header,.print-summary,.print-section{break-inside:avoid}}
  .sync-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
  #expenseTotal{color:#a24445}
+ .sync-actions #pushSyncBtn{display:none}
