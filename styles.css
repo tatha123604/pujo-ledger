@@ -19,3 +19,4 @@
 .print-header{background:linear-gradient(135deg,#b96816,#e0a13b);box-shadow:0 8px 20px #b9681638;-webkit-print-color-adjust:exact;print-color-adjust:exact}.print-header p{color:#fff0bf}.print-header h1{color:#fffdf5}.print-header span,.print-date{color:#fff5df}
 .print-header h1{color:#d9f2c7}
 @media print{body{background:#fff}body>*:not(#printReport){display:none!important}#printReport{display:block!important}.print-page{max-width:none}.print-section{break-inside:avoid}.print-header,.print-summary,.print-section{break-inside:avoid}}
+ .sync-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
