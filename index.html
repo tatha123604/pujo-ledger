@@ -6,11 +6,11 @@
   <meta name="theme-color" content="#8c2f39" />
   <meta name="description" content="Offline Durga Puja accounting ledger" />
   <link rel="manifest" href="manifest.webmanifest" />
-  <link rel="stylesheet" href="styles.css?v=19" />
+  <link rel="stylesheet" href="styles.css?v=20" />
   <title>Ma Durga — Pujo Ledger</title>
 </head>
 <body>
-  <header class="topbar"><div><span class="eyebrow">DURGA PUJA ACCOUNTING</span><h1>Pujo Ledger <span id="yearTitle">2026</span></h1></div><div class="top-actions"><div class="year-switcher" aria-label="Accounting year"><a class="year-btn" data-year="2025" href="?year=2025&v=7">2025</a><a class="year-btn active" data-year="2026" href="?year=2026&v=7">2026</a></div><button id="installBtn" class="ghost hidden">Install app</button></div></header>
+  <header class="topbar"><div><span class="eyebrow">ACCOUNTING SYSTEM</span><h1><span id="ledgerTitle">Pujo Ledger</span> <span id="yearTitle">2026</span></h1></div><div class="top-actions"><label class="ledger-picker" aria-label="Select ledger"><span>Ledger</span><select id="ledgerSelect"><option value="pujo">Pujo Ledger</option><option value="meal">Meal System</option><option value="maintenance">Maintenance System</option></select></label><div class="year-switcher" aria-label="Accounting year"><a class="year-btn" data-year="2025" href="?year=2025&v=7">2025</a><a class="year-btn active" data-year="2026" href="?year=2026&v=7">2026</a></div><button id="installBtn" class="ghost hidden">Install app</button></div></header>
   <main class="shell">
     <section class="hero"><div><p class="eyebrow">OFFLINE-FIRST • PRIVATE ON THIS DEVICE</p><h2>Keep every collection and expense in one place.</h2><p class="muted">Pal Bhavan Durga Puja <span id="heroYear">2026</span></p></div><button class="primary" data-action="new">+ New entry</button></section>
     <section class="stats"><article><span>Total income (Income + Cash donations)</span><strong id="incomeTotal">₹0</strong><small id="incomeCount">0 entries</small></article><article><span>Total expenses</span><strong id="expenseTotal">₹0</strong><small id="expenseCount">0 entries</small></article><article class="balance"><span>Current balance</span><strong id="balanceTotal">₹0</strong><small>Income minus expenses</small></article><article class="donation-stat"><span>Cash donations</span><strong id="cashDonationTotal">₹0</strong><small>Cash donation total</small></article></section>
