@@ -70,5 +70,9 @@ $('#printBtn').onclick=()=>{renderPrintReport();printReport.querySelector('.prin
 $('#syncCode')?.addEventListener('change',()=>{state.syncToken=$('#syncCode').value.trim();save();});
 $('#pushSyncBtn')?.addEventListener('click',()=>{state.syncToken=$('#syncCode').value.trim();save();pushCloudState();});
 $('#pullSyncBtn')?.addEventListener('click',()=>{state.syncToken=$('#syncCode').value.trim();cloudSyncPaused=true;save();cloudSyncPaused=false;pullCloudState();});
+function openEntryGroup(group){showView('entries');activeEntryGroup=group;applyEntryGroupTab();$('#entriesView').scrollIntoView({behavior:'smooth',block:'start'});}
+$('#incomeTotal')?.closest('article')?.addEventListener('click',()=>openEntryGroup('income'));
+$('#expenseTotal')?.closest('article')?.addEventListener('click',()=>openEntryGroup('expense'));
+$('#cashDonationTotal')?.closest('article')?.addEventListener('click',()=>openEntryGroup('donation'));
 document.addEventListener('click',e=>{const imageButton=e.target.closest('.entry-image-link');if(imageButton){$('#lightboxImage').src=imageButton.dataset.image;$('#imageDialog').showModal();return;}if(e.target.closest('[data-image-close]'))$('#imageDialog')?.close();});
 $('#imageDialog')?.addEventListener('click',e=>{if(e.target===$('#imageDialog'))$('#imageDialog').close();});
