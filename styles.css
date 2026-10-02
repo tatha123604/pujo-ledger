@@ -28,3 +28,4 @@
 .top-actions{display:flex;align-items:center;justify-content:flex-end;gap:10px;flex-wrap:nowrap}.top-actions #installBtn{white-space:nowrap}.ledger-picker{white-space:nowrap}
 @media(max-width:720px){.top-actions{gap:6px;max-width:62vw}.ledger-picker span{display:none}.ledger-picker select{min-width:112px;padding-left:8px;padding-right:22px}.topbar h1{font-size:18px}.topbar h1 span{font-size:12px;margin-left:3px}}
 .print-summary .expense-total strong{color:#a24445}.print-summary .final.positive strong{color:#477a61}.print-summary .final.negative strong{color:#a24445}.print-section h2.green-heading{color:#477a61}
+.image-thumb{position:relative;width:72px;height:72px}.image-thumb .entry-image-link{width:64px;height:64px}.image-remove{position:absolute;right:0;top:0;width:21px;height:21px;border:0;border-radius:50%;background:#a24445;color:#fff;font-size:15px;line-height:18px;padding:0;z-index:1}
