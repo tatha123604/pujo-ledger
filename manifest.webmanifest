@@ -1,1 +1,1 @@
-{"name":"Pujo Ledger","short_name":"Pujo Ledger","start_url":".","display":"standalone","background_color":"#fbf7f1","theme_color":"#8c2f39","description":"Offline Durga Puja accounting ledger","icons":[]}
+{"name":"Ma Durga","short_name":"Ma Durga","start_url":".","display":"standalone","background_color":"#fbf7f1","theme_color":"#8c2f39","description":"Offline Durga Puja accounting ledger","icons":[{"src":"icon-192.png","sizes":"192x192","type":"image/png","purpose":"any maskable"},{"src":"icon-512.png","sizes":"512x512","type":"image/png","purpose":"any maskable"}]}
