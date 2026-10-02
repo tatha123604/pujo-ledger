@@ -41,3 +41,7 @@ npx cap open android
 ```
 
 In Android Studio, use **Build > Build Bundle(s) / APK(s) > Build APK(s)**. The app stores ledger data and receipt images in IndexedDB on the device. The JSON backup can be copied between devices; cloud sync can be added later behind the same storage boundary.
+
+### Automatic APK from GitHub
+
+Every push to `main` runs `.github/workflows/android-apk.yml`. Open the repository's **Actions**, select **Build Android APK**, open a successful run, and download the `pujo-ledger-debug-apk` artifact.
