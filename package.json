@@ -1,0 +1,1 @@
+{"name":"pujo-ledger","private":true,"scripts":{"android":"npx cap open android","sync":"npx cap sync android"},"dependencies":{"@capacitor/android":"latest","@capacitor/cli":"latest","@capacitor/core":"latest"}}
