@@ -33,3 +33,4 @@
 @media(max-width:720px){.hero-deity{width:70px;height:70px;position:absolute;right:18px;top:18px}.hero-copy{padding-right:58px}.hero h2{max-width:100%}}
 .hero .muted{color:#ffe08a;font-size:18px;font-weight:800;letter-spacing:.04em;text-shadow:0 2px 8px #3c111855}
 @media(max-width:720px){.hero .muted{font-size:15px}}
+.backup-grid .action-panel #exportBtn,.backup-grid .action-panel #excelBtn{width:100%;margin-top:8px}
