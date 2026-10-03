@@ -29,3 +29,5 @@
 @media(max-width:720px){.top-actions{gap:6px;max-width:62vw}.ledger-picker span{display:none}.ledger-picker select{min-width:112px;padding-left:8px;padding-right:22px}.topbar h1{font-size:18px}.topbar h1 span{font-size:12px;margin-left:3px}}
 .print-summary .expense-total strong{color:#a24445}.print-summary .final.positive strong{color:#477a61}.print-summary .final.negative strong{color:#a24445}.print-section h2.green-heading{color:#477a61}
 .image-thumb{position:relative;width:72px;height:72px}.image-thumb .entry-image-link{width:64px;height:64px}.image-remove{position:absolute;right:0;top:0;width:21px;height:21px;border:0;border-radius:50%;background:#a24445;color:#fff;font-size:15px;line-height:18px;padding:0;z-index:1}
+.hero-deity{width:92px;height:92px;object-fit:cover;border-radius:50%;border:3px solid #f7d895;box-shadow:0 8px 18px #3c111833;z-index:1}.hero-copy{z-index:1}
+@media(max-width:720px){.hero-deity{width:70px;height:70px;position:absolute;right:18px;top:18px}.hero-copy{padding-right:58px}.hero h2{max-width:100%}}
