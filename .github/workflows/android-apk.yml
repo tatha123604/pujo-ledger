@@ -31,7 +31,7 @@ jobs:
         run: npm install
 
       - name: Prepare web assets
-        run: mkdir -p www && cp index.html styles.css app.js manifest.webmanifest sw.js icon-192.png icon-512.png www/
+        run: mkdir -p www/resources && cp index.html styles.css app.js manifest.webmanifest sw.js icon-192.png icon-512.png www/ && cp resources/durga-collection.jpg www/resources/
 
       - name: Add Android platform
         run: npx cap add android
