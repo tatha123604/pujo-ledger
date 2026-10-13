@@ -34,3 +34,4 @@
 .hero .muted{color:#ffe08a;font-size:18px;font-weight:800;letter-spacing:.04em;text-shadow:0 2px 8px #3c111855}
 @media(max-width:720px){.hero .muted{font-size:15px}}
 .backup-grid .action-panel #exportBtn,.backup-grid .action-panel #excelBtn{width:100%;margin-top:8px}
+.browser-lock{position:fixed;inset:0;z-index:20;display:grid;place-items:center;background:linear-gradient(135deg,#6f222d,#b96816);padding:20px}.browser-lock-card{width:min(360px,100%);background:var(--paper);border-radius:20px;padding:28px;box-shadow:0 24px 70px #35151866;text-align:center}.browser-lock-card h2{font:700 28px Georgia,serif;color:var(--wine);margin:8px 0}.browser-lock-card p:not(.eyebrow){color:var(--muted);margin:0 0 18px}.browser-lock-card input{margin-bottom:12px;text-align:center;letter-spacing:.25em}.browser-lock-card button{width:100%}.browser-lock-card small{display:block;color:#a24445;min-height:18px;margin-top:10px}
