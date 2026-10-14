@@ -38,3 +38,4 @@
 .topbar .eyebrow{color:#477a61}.hero .eyebrow,.hero .muted{color:#315d40;background:transparent;padding:0;text-shadow:none}.hero .muted{font-size:18px;font-weight:800;letter-spacing:.04em}.hero .primary{background:#477a61;color:#fff}.hero .primary:hover{background:#38664f;color:#fff}
 .entry-actions [data-edit]{background:#477a61;border-color:#477a61;color:#fff}.entry-actions [data-edit]:hover{background:#38664f;border-color:#38664f}.entry-actions [data-delete]{background:#a24445;border-color:#a24445;color:#fff}.entry-actions [data-delete]:hover{background:#873638;border-color:#873638}
 .entry-icon.income,.entry-icon.donation{color:#477a61}.entry-icon.expense{color:#a24445}
+#entriesView .section-head .primary{background:#477a61;color:#fff}#entriesView .section-head .primary:hover{background:#38664f;color:#fff}
