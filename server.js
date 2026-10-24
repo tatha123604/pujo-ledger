@@ -38,7 +38,7 @@ function sendJson(response, status, body) {
 function readBody(request) {
   return new Promise((resolve, reject) => {
     let body = '';
-    request.on('data', chunk => { body += chunk; if (body.length > 12_000_000) request.destroy(); });
+    request.on('data', chunk => { body += chunk; if (body.length > 50_000_000) request.destroy(); });
     request.on('end', () => resolve(body));
     request.on('error', reject);
   });
