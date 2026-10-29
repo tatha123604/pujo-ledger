@@ -43,3 +43,30 @@
 #entryDialog .dialog-actions button[type="submit"]{background:linear-gradient(135deg,#5a8c68,#4f815e);color:#fff;border:1px solid #4f815e;box-shadow:0 3px 9px #4f815e33}#entryDialog .dialog-actions button[type="submit"]:hover{background:linear-gradient(135deg,#4d7e5b,#426f52);border-color:#426f52}#entryDialog .dialog-actions button[type="button"]{background:#a24445;color:#fff;border:1px solid #a24445}#entryDialog .dialog-actions button[type="button"]:hover{background:#873638;border-color:#873638}
 .hero .eyebrow{color:#a24445}
 .hero .eyebrow{font-size:15px;font-weight:900;letter-spacing:.14em;color:#67252b;-webkit-text-stroke:1px #fff0d5;paint-order:stroke fill;text-shadow:0 1px 2px #302526,0 0 5px #fff0d5}
+@page{size:A4;margin:13mm 12mm 15mm}
+@media print{
+  html,body{width:100%;margin:0;background:#fff!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  body>*:not(#printReport){display:none!important}
+  #printReport{display:block!important}
+  .print-page{max-width:none;margin:0;font-size:10pt}
+  .print-header,.print-summary{break-inside:avoid;page-break-inside:avoid}
+  .print-header{margin-bottom:15px;padding:18px 20px 14px;border-radius:10px;box-shadow:none}
+  .print-header h1{font-size:26px}
+  .print-summary{grid-template-columns:repeat(4,minmax(0,1fr));gap:7px;margin:12px 0 16px}
+  .print-summary div{padding:8px 9px}
+  .print-summary strong{font-size:14px}
+  .print-section{margin:13px 0;break-inside:auto;page-break-inside:auto}
+  .print-section h2{font-size:15px;margin:0 0 6px;padding-bottom:5px;break-after:avoid-page;page-break-after:avoid}
+  .print-section table{font-size:8.5pt;table-layout:auto}
+  .print-section thead{display:table-header-group}
+  .print-section tfoot{display:table-row-group}
+  .print-section tr{break-inside:avoid;page-break-inside:avoid}
+  .print-section th{padding:5px 6px;font-size:7.5pt}
+  .print-section td{padding:5px 6px;line-height:1.25;overflow-wrap:anywhere}
+  .print-section th,.print-section td{text-align:left}
+  .print-section[data-report="Income"] th:nth-child(2),.print-section[data-report="Income"] td:nth-child(2),.print-section[data-report="Cash Donation"] th:nth-child(2),.print-section[data-report="Cash Donation"] td:nth-child(2),.print-section[data-report="Expenses"] th:nth-child(2),.print-section[data-report="Expenses"] td:nth-child(2),.print-section[data-report="Misc. Donation"] th:nth-child(3),.print-section[data-report="Misc. Donation"] td:nth-child(3){text-align:right;white-space:nowrap}
+  .print-section[data-report="Income"] th:last-child,.print-section[data-report="Income"] td:last-child,.print-section[data-report="Cash Donation"] th:last-child,.print-section[data-report="Cash Donation"] td:last-child,.print-section[data-report="Expenses"] th:last-child,.print-section[data-report="Expenses"] td:last-child,.print-section[data-report="Misc. Donation"] th:last-child,.print-section[data-report="Misc. Donation"] td:last-child{text-align:left}
+  .print-section tfoot td:first-child{text-align:left}
+  .print-section[data-report] tfoot td:last-child{text-align:right}
+  .print-footer{break-inside:avoid;page-break-inside:avoid;margin-top:16px}
+}
