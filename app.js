@@ -108,25 +108,75 @@ const browserLock=$('#browserLock'),browserPassword=$('#browserPassword'),unlock
 const guardedOpenEntry=openEntry;openEntry=function(entry){if(!state.hydrated){toast('Please wait while the app finishes loading');return}guardedOpenEntry(entry)};let entrySaveLocked=false;$('#entryForm')?.addEventListener('submit',event=>{if(entrySaveLocked){event.preventDefault();event.stopImmediatePropagation();return}entrySaveLocked=true;setTimeout(()=>{entrySaveLocked=false},1800)},true);
 document.addEventListener('click',e=>{const remove=e.target.closest('[data-remove-image]');if(remove)remove.closest('.image-thumb')?.remove();});
 $('#entryForm')?.addEventListener('submit',()=>setTimeout(()=>{const id=$('#entryId').value,entry=state.entries.find(item=>item.id===id);if(entry){entry.images=[...$('#imagePreview').querySelectorAll('.entry-image-link')].map(button=>button.dataset.image);save();}},90));
-function downloadExcel(){
-  const entries=state.entries.slice().sort(sortDate);
-  const income=entries.filter(e=>e.type==='income').reduce((sum,e)=>sum+Number(e.amount||0),0);
-  const cash=entries.filter(e=>e.type==='donation'&&e.donationKind==='cash').reduce((sum,e)=>sum+Number(e.amount||0),0);
-  const misc=entries.filter(e=>e.type==='donation'&&e.donationKind!=='cash').reduce((sum,e)=>sum+Number(e.amount||0),0);
-  const expense=entries.filter(e=>e.type==='expense').reduce((sum,e)=>sum+Number(e.amount||0),0);
-  const totalIncome=income+cash+misc;
+async function downloadExcel(){
+  const entries=state.entries.slice().sort(sortDate),ledgerName=ledgerLabels[state.activeLedger]||'Ledger';
+  const income=entries.filter(e=>e.type==='income'),cash=entries.filter(e=>e.type==='donation'&&e.donationKind==='cash'),misc=entries.filter(e=>e.type==='donation'&&e.donationKind!=='cash'),expenses=entries.filter(e=>e.type==='expense');
+  const sum=list=>list.reduce((total,e)=>total+Number(e.amount||0),0),totalIncome=sum(income)+sum(cash)+sum(misc),totalExpense=sum(expenses),cashInHand=totalIncome-totalExpense;
+  const incomeTotal=sum(income),cashTotal=sum(cash),miscTotal=sum(misc),columnCount=9,reportRows=[],merges=[],amountCells=[],sections=[];
+  const ensureRow=row=>{while(reportRows.length<=row)reportRows.push(Array(columnCount).fill(''))};
+  const setCell=(row,col,value)=>{ensureRow(row);reportRows[row][col]=value};
+  const merge=(row,startCol,endCol)=>merges.push({s:{r:row,c:startCol},e:{r:row,c:endCol}});
+  const setAmount=(row,col,value)=>{setCell(row,col,Number(value||0));amountCells.push({r:row,c:col})};
+  const reportTitle=state.activeLedger==='pujo'?`Pal Barir Durga Pujo ${state.activeYear}`:`${ledgerName} ${state.activeYear}`;
+  setCell(0,2,'PAL BHAVAN');merge(0,2,6);
+  setCell(1,2,reportTitle);merge(1,2,6);
+  setCell(2,2,'INCOME & EXPENSE STATEMENT');merge(2,2,6);
+  setCell(3,2,`Prepared on ${new Date().toLocaleDateString('en-IN')}`);merge(3,2,6);
+  const addSection=(startRow,startCol,title,headers,items,totalLabel,total,amountIndex)=>{
+    const lastCol=startCol+headers.length-1;
+    setCell(startRow,startCol,title.toUpperCase());merge(startRow,startCol,lastCol);
+    const headerRow=startRow+1;headers.forEach((header,index)=>setCell(headerRow,startCol+index,header.toUpperCase()));
+    let row=headerRow+1;
+    if(!items.length){setCell(row,startCol,'No entries');merge(row,startCol,lastCol);row++}
+    else items.forEach(item=>{item.forEach((value,index)=>{const col=startCol+index;if(index===amountIndex)setAmount(row,col,value);else setCell(row,col,value??'')});row++});
+    const totalRow=row;setCell(totalRow,startCol,totalLabel.toUpperCase());merge(totalRow,startCol,lastCol-1);setAmount(totalRow,lastCol,total);sections.push({startRow,headerRow,totalRow,startCol,lastCol,expense:title==='Expenses'});
+    return totalRow+2;
+  };
+  const firstSectionRow=5;
+  let leftRow=addSection(firstSectionRow,0,'Income',['Contributor','Amount','Notes'],income.map(e=>[e.person||'—',Number(e.amount||0),e.notes||'—']),'Total income',incomeTotal,1);
+  leftRow=addSection(leftRow,0,'Cash Donation',['Donor','Amount','Notes'],cash.map(e=>[e.person||'—',Number(e.amount||0),e.notes||'—']),'Total cash donated',cashTotal,1);
+  leftRow=addSection(leftRow,0,'Misc. Donation',['Donor','Item / description','Value','Notes'],misc.map(e=>[e.person||'—',e.particular||'—',Number(e.amount||0),e.notes||'—']),'Total item donation value',miscTotal,2);
+  const rightRow=addSection(firstSectionRow,5,'Expenses',['Particular','Amount','Notes'],expenses.map(e=>[e.particular||'—',Number(e.amount||0),e.notes||'—']),'Total expense',totalExpense,1);
+  const cardRow=Math.max(leftRow,rightRow)+1,detailRow=cardRow+1,valueRow=cardRow+2;
+  const cards=[
+    {col:0,end:2,label:'TOTAL COLLECTION',detail:'(Total Income + Total Cash Donation + Total Misc. Donation)',value:totalIncome},
+    {col:3,end:5,label:'TOTAL EXPENSES',detail:'',value:totalExpense},
+    {col:6,end:8,label:'CURRENT BALANCE',detail:'',value:cashInHand}
+  ];
+  cards.forEach(card=>{setCell(cardRow,card.col,card.label);merge(cardRow,card.col,card.end);setCell(detailRow,card.col,card.detail);merge(detailRow,card.col,card.end);setAmount(valueRow,card.col,card.value);merge(valueRow,card.col,card.end)});
+  const workbook=new ExcelJS.Workbook();workbook.creator='Pujo Ledger';workbook.created=new Date();
+  const summarySheet=workbook.addWorksheet('Summary',{views:[{state:'frozen',ySplit:4}]});
+  summarySheet.addRows(reportRows);
+  const excelCol=number=>{let result='';while(number){const remainder=(number-1)%26;result=String.fromCharCode(65+remainder)+result;number=Math.floor((number-1)/26)}return result};
+  const excelCell=(row,col)=>`${excelCol(col+1)}${row+1}`;
+  for(const area of merges)summarySheet.mergeCells(`${excelCell(area.s.r,area.s.c)}:${excelCell(area.e.r,area.e.c)}`);
+  summarySheet.columns=[{width:20},{width:16},{width:24},{width:24},{width:4},{width:24},{width:16},{width:24},{width:20}];
+  [20,28,20,20].forEach((height,index)=>summarySheet.getRow(index+1).height=height);
+  const saffron='C87919',deepSaffron='A95310',lightSaffron='F8E9D8',green='43866A',red='B74438',border='E7D9CC',white='FFFFFF';
+  const styleRange=(row,startCol,endCol,style)=>{for(let col=startCol;col<=endCol;col++)Object.assign(summarySheet.getCell(row+1,col+1),style)};
+  styleRange(0,2,6,{fill:{type:'pattern',pattern:'solid',fgColor:{argb:saffron}},font:{bold:true,color:{argb:white},size:10},alignment:{horizontal:'center',vertical:'middle'}});
+  styleRange(1,2,6,{fill:{type:'pattern',pattern:'solid',fgColor:{argb:saffron}},font:{bold:true,color:{argb:white},size:20},alignment:{horizontal:'center',vertical:'middle'}});
+  styleRange(2,2,6,{fill:{type:'pattern',pattern:'solid',fgColor:{argb:saffron}},font:{color:{argb:white},size:11},alignment:{horizontal:'center',vertical:'middle'}});
+  styleRange(3,2,6,{fill:{type:'pattern',pattern:'solid',fgColor:{argb:saffron}},font:{color:{argb:white},size:9},alignment:{horizontal:'center',vertical:'middle'}});
+  for(const section of sections){
+    const accent=section.expense?red:green,tableFill=section.expense?'FCEAE7':'EAF3EC';
+    styleRange(section.startRow,section.startCol,section.lastCol,{fill:{type:'pattern',pattern:'solid',fgColor:{argb:accent}},font:{bold:true,color:{argb:white},size:12},alignment:{vertical:'middle'}});
+    styleRange(section.headerRow,section.startCol,section.lastCol,{fill:{type:'pattern',pattern:'solid',fgColor:{argb:tableFill}},font:{bold:true,color:{argb:deepSaffron},size:9},alignment:{vertical:'middle'},border:{bottom:{style:'thin',color:{argb:border}}}});
+    for(let row=section.headerRow+1;row<section.totalRow;row++)for(let col=section.startCol;col<=section.lastCol;col++){const cell=summarySheet.getCell(row+1,col+1);cell.alignment={vertical:'top',wrapText:true};cell.border={bottom:{style:'hair',color:{argb:border}}};if(typeof cell.value==='number'){cell.numFmt='[$₹-en-IN]#,##,##0';cell.font={bold:true,color:{argb:accent}}}}
+    styleRange(section.totalRow,section.startCol,section.lastCol,{fill:{type:'pattern',pattern:'solid',fgColor:{argb:lightSaffron}},font:{bold:true,color:{argb:section.expense?red:green}},border:{top:{style:'thin',color:{argb:saffron}}}});
+    summarySheet.getCell(section.totalRow+1,section.lastCol+1).numFmt='[$₹-en-IN]#,##,##0';
+  }
+  cards.forEach(card=>{for(let row=cardRow;row<=valueRow;row++)styleRange(row,card.col,card.end,{fill:{type:'pattern',pattern:'solid',fgColor:{argb:'FFF8ED'}},border:{top:{style:'thin',color:{argb:border}},bottom:{style:'thin',color:{argb:border}},left:{style:'thin',color:{argb:border}},right:{style:'thin',color:{argb:border}}},alignment:{horizontal:'center',vertical:'middle',wrapText:true}});const label=summarySheet.getCell(cardRow+1,card.col+1),value=summarySheet.getCell(valueRow+1,card.col+1);label.font={bold:true,color:{argb:saffron},size:10};value.font={bold:true,color:{argb:card.label==='TOTAL EXPENSES'?red:green},size:16};value.numFmt='[$₹-en-IN]#,##,##0';summarySheet.getRow(detailRow+1).height=24;summarySheet.getRow(valueRow+1).height=28});
+  const logoResponse=await fetch('resources/durga-collection.jpg');if(!logoResponse.ok)throw new Error('Could not load Maa Durga image');const logoBytes=new Uint8Array(await logoResponse.arrayBuffer());let binary='';for(let offset=0;offset<logoBytes.length;offset+=0x8000)binary+=String.fromCharCode(...logoBytes.subarray(offset,offset+0x8000));const logoId=workbook.addImage({base64:btoa(binary),extension:'jpeg'});summarySheet.addImage(logoId,'A1:B4');summarySheet.addImage(logoId,'H1:I4');
   const rows=[['Date','Type','Name / Particular','Item / Description','Payment mode','Amount','Notes','Images'],...entries.map(e=>[e.date,e.type==='expense'?'Expense':e.type==='donation'?(e.donationKind==='cash'?'Cash Donation':'Misc. Donation'):'Income',e.person||e.particular||'',e.particular||'',e.mode,Number(e.amount||0),e.notes||'',e.images?.length?e.images.length+' image(s)':''])];
-  const entriesSheet=XLSX.utils.aoa_to_sheet(rows);
-  entriesSheet['!cols']=[{wch:14},{wch:18},{wch:28},{wch:30},{wch:18},{wch:14},{wch:36},{wch:14}];
-  const summarySheet=XLSX.utils.aoa_to_sheet([['Ledger',ledgerLabels[state.activeLedger]||'Ledger'],['Year',state.activeYear],[],['Summary','Amount'],['Income',income],['Cash donations',cash],['Misc. donations',misc],['Total income',totalIncome],['Total expense',expense],['Current balance',totalIncome-expense]]);
-  summarySheet['!cols']=[{wch:24},{wch:28}];
-  const workbook=XLSX.utils.book_new();
-  XLSX.utils.book_append_sheet(workbook,entriesSheet,'Entries');
-  XLSX.utils.book_append_sheet(workbook,summarySheet,'Summary');
-  XLSX.writeFile(workbook,`${ledgerLabels[state.activeLedger]||'ledger'}-${state.activeYear}.xlsx`,{compression:true});
-  toast('Excel workbook downloaded');
+  const entriesSheet=workbook.addWorksheet('Entries',{views:[{state:'frozen',ySplit:1}]});entriesSheet.addRows(rows);
+  entriesSheet.columns=[{width:14},{width:18},{width:28},{width:30},{width:18},{width:14},{width:36},{width:14}];
+  entriesSheet.autoFilter=`A1:H${rows.length}`;
+  entriesSheet.getRow(1).height=24;entriesSheet.getRow(1).eachCell(cell=>{cell.fill={type:'pattern',pattern:'solid',fgColor:{argb:saffron}};cell.font={bold:true,color:{argb:white}};cell.alignment={vertical:'middle',wrapText:true}});
+  for(let row=2;row<=rows.length;row++){const cell=entriesSheet.getCell(row,6);cell.numFmt='[$₹-en-IN]#,##,##0';cell.font={color:{argb:entriesSheet.getCell(row,2).value==='Expense'?red:green}}}
+  try{const buffer=await workbook.xlsx.writeBuffer(),url=URL.createObjectURL(new Blob([buffer],{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'})),link=document.createElement('a');link.href=url;link.download=`${ledgerName}-${state.activeYear}.xlsx`;link.click();setTimeout(()=>URL.revokeObjectURL(url),1000);toast('Excel workbook downloaded')}catch(error){console.error('Excel export failed',error);toast('Could not create Excel workbook')}
 }
-const excelButton=document.createElement('button');excelButton.id='excelBtn';excelButton.className='secondary';excelButton.type='button';excelButton.textContent='Download Excel (.xlsx)';$('#exportBtn')?.after(excelButton);excelButton.addEventListener('click',downloadExcel);
+const excelButton=document.createElement('button');excelButton.id='excelBtn';excelButton.className='secondary';excelButton.type='button';excelButton.textContent='Download Excel (.xlsx)';$('#exportBtn')?.after(excelButton);excelButton.addEventListener('click',()=>downloadExcel().catch(error=>{console.error('Excel export failed',error);toast('Could not create Excel workbook')}));
 const baseOpenEntry=openEntry;openEntry=function(entry){baseOpenEntry(entry);if(entry?.type==='donation'&&$('#donationKind')){$('#donationKind').value=entry.donationKind||'cash';$('#entryDonationDetail').value=entry.particular||'';updateDonationDetailVisibility()}};
 $('#entryForm')?.addEventListener('submit',()=>setTimeout(()=>{const id=$('#entryId').value,entry=state.entries.find(item=>item.id===id);if(entry?.type==='donation'){entry.person=$('#entryPerson').value.trim();entry.particular=$('#entryDonationDetail').value.trim();entry.donationKind=$('#donationKind').value;entry.category=entry.donationKind==='cash'?'Cash Donation':'Item Donation';save();render()}},120));
 function applyPrintColors(){const income=state.entries.filter(e=>e.type==='income').reduce((sum,e)=>sum+Number(e.amount||0),0),cash=state.entries.filter(e=>e.type==='donation'&&e.donationKind==='cash').reduce((sum,e)=>sum+Number(e.amount||0),0),expense=state.entries.filter(e=>e.type==='expense').reduce((sum,e)=>sum+Number(e.amount||0),0),balance=income+cash-expense;printReport.querySelector('.print-summary div:nth-child(2)')?.classList.add('expense-total');const final=printReport.querySelector('.print-summary .final');final?.classList.toggle('positive',balance>=0);final?.classList.toggle('negative',balance<0);printReport.querySelectorAll('.print-section h2').forEach(heading=>heading.classList.toggle('green-heading',heading.textContent!=='Expenses'));}
