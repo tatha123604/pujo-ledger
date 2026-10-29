@@ -82,4 +82,6 @@
   .print-total-card.current-balance.negative{border-left-color:#a24445}
   .print-total-card.current-balance.negative strong{color:#a24445}
   .print-footer{break-inside:avoid;page-break-inside:avoid;margin-top:16px}
+  .print-footer-brand{display:flex;align-items:center;gap:6px;font-size:9px;font-weight:700;color:#796b6b}
+  .print-footer-brand img{display:block;width:28px;height:28px;object-fit:cover;border:1px solid #eadfd7;border-radius:6px}
 }
