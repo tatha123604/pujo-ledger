@@ -52,7 +52,7 @@
   .print-header,.print-summary{break-inside:avoid;page-break-inside:avoid}
   .print-header{margin-bottom:15px;padding:18px 20px 14px;border-radius:10px;box-shadow:none}
   .print-header h1{font-size:26px}
-  .print-summary{grid-template-columns:repeat(4,minmax(0,1fr));gap:7px;margin:12px 0 16px}
+  .print-summary{grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;margin:12px 0 16px}
   .print-summary div{padding:8px 9px}
   .print-summary strong{font-size:14px}
   .print-section{margin:13px 0;break-inside:auto;page-break-inside:auto}
@@ -68,5 +68,6 @@
   .print-section[data-report="Income"] th:last-child,.print-section[data-report="Income"] td:last-child,.print-section[data-report="Cash Donation"] th:last-child,.print-section[data-report="Cash Donation"] td:last-child,.print-section[data-report="Expenses"] th:last-child,.print-section[data-report="Expenses"] td:last-child,.print-section[data-report="Misc. Donation"] th:last-child,.print-section[data-report="Misc. Donation"] td:last-child{text-align:left}
   .print-section tfoot td:first-child{text-align:left}
   .print-section[data-report] tfoot td:last-child{text-align:right}
+  .print-section[data-report="Expenses"] h2{color:#a24445}
   .print-footer{break-inside:avoid;page-break-inside:avoid;margin-top:16px}
 }
