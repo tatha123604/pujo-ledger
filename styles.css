@@ -56,6 +56,8 @@
   .print-summary div{padding:8px 9px}
   .print-summary strong{font-size:14px}
   .print-section{margin:13px 0;break-inside:auto;page-break-inside:auto}
+  .print-columns{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));align-items:start;gap:14px}
+  .print-columns .print-section{min-width:0}
   .print-section h2{font-size:15px;margin:0 0 6px;padding-bottom:5px;break-after:avoid-page;page-break-after:avoid}
   .print-section table{font-size:8.5pt;table-layout:auto}
   .print-section thead{display:table-header-group}
