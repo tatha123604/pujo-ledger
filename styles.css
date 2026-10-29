@@ -55,6 +55,7 @@
   .print-summary{grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;margin:12px 0 16px}
   .print-summary div{padding:8px 9px}
   .print-summary strong{font-size:14px}
+  .print-summary .collection-total small{display:inline;font-size:6.5pt;font-weight:600;letter-spacing:0;text-transform:none;color:#796b6b}
   .print-section{margin:13px 0;break-inside:auto;page-break-inside:auto}
   .print-columns{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));align-items:start;gap:14px}
   .print-column{min-width:0;break-inside:auto;page-break-inside:auto}
