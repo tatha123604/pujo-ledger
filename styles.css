@@ -57,19 +57,26 @@
   .print-summary strong{font-size:14px}
   .print-section{margin:13px 0;break-inside:auto;page-break-inside:auto}
   .print-columns{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));align-items:start;gap:14px}
+  .print-column{min-width:0;break-inside:auto;page-break-inside:auto}
   .print-columns .print-section{min-width:0}
   .print-section h2{font-size:15px;margin:0 0 6px;padding-bottom:5px;break-after:avoid-page;page-break-after:avoid}
-  .print-section table{font-size:8.5pt;table-layout:auto}
+  .print-section table{font-size:8pt;table-layout:auto}
   .print-section thead{display:table-header-group}
   .print-section tfoot{display:table-row-group}
   .print-section tr{break-inside:avoid;page-break-inside:avoid}
-  .print-section th{padding:5px 6px;font-size:7.5pt}
-  .print-section td{padding:5px 6px;line-height:1.25;overflow-wrap:anywhere}
+  .print-section th{padding:4px 5px;font-size:7.5pt}
+  .print-section td{padding:3px 5px;line-height:1.15;overflow-wrap:anywhere}
   .print-section th,.print-section td{text-align:left}
   .print-section[data-report="Income"] th:nth-child(2),.print-section[data-report="Income"] td:nth-child(2),.print-section[data-report="Cash Donation"] th:nth-child(2),.print-section[data-report="Cash Donation"] td:nth-child(2),.print-section[data-report="Expenses"] th:nth-child(2),.print-section[data-report="Expenses"] td:nth-child(2),.print-section[data-report="Misc. Donation"] th:nth-child(3),.print-section[data-report="Misc. Donation"] td:nth-child(3){text-align:right;white-space:nowrap}
   .print-section[data-report="Income"] th:last-child,.print-section[data-report="Income"] td:last-child,.print-section[data-report="Cash Donation"] th:last-child,.print-section[data-report="Cash Donation"] td:last-child,.print-section[data-report="Expenses"] th:last-child,.print-section[data-report="Expenses"] td:last-child,.print-section[data-report="Misc. Donation"] th:last-child,.print-section[data-report="Misc. Donation"] td:last-child{text-align:left}
   .print-section tfoot td:first-child{text-align:left}
   .print-section[data-report] tfoot td:last-child{text-align:right}
   .print-section[data-report="Expenses"] h2{color:#a24445}
+  .print-total-card{display:flex;flex-direction:column;gap:5px;margin:13px 0 16px;padding:10px 12px;border:1px solid #ead3a5;border-left:4px solid #4f815e;border-radius:8px;background:#fff8eb;break-inside:avoid;page-break-inside:avoid;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .print-total-card span{font-size:9px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#796b6b}
+  .print-total-card small{font-size:8px;color:#796b6b}
+  .print-total-card strong{font:700 16px Georgia,serif;color:#477a61}
+  .print-total-card.current-balance.negative{border-left-color:#a24445}
+  .print-total-card.current-balance.negative strong{color:#a24445}
   .print-footer{break-inside:avoid;page-break-inside:avoid;margin-top:16px}
 }
