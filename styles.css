@@ -50,7 +50,10 @@
   #printReport{display:block!important}
   .print-page{max-width:none;margin:0;font-size:10pt}
   .print-header,.print-summary{break-inside:avoid;page-break-inside:avoid}
-  .print-header{margin-bottom:15px;padding:18px 20px 14px;border-radius:10px;box-shadow:none}
+  .print-header{position:relative;margin-bottom:15px;padding:18px 76px 14px;border-radius:10px;box-shadow:none}
+  .print-header-logo{position:absolute;top:50%;width:54px;height:54px;object-fit:cover;border:2px solid #fff0d5;border-radius:50%;box-shadow:0 2px 8px #5a310c55;transform:translateY(-50%)}
+  .print-header-logo.left{left:14px}
+  .print-header-logo.right{right:14px}
   .print-header h1{font-size:26px}
   .print-summary{grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;margin:12px 0 16px}
   .print-summary div{padding:8px 9px}
